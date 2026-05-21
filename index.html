@@ -389,16 +389,73 @@
   }
   footer span { color: var(--green); }
 
+  /* Hamburger — hidden on desktop */
+  .nav-hamburger { display: none; }
+
   /* FADE IN */
   .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
 
+  /* ── MOBILE ─────────────────────────────────────── */
   @media (max-width: 768px) {
-    .hero-inner, .sobre-grid, .erasmus-row, .musica-grid { grid-template-columns: 1fr; }
-    .terminal { display: none; }
+
+    .cursor, .cursor-ring { display: none; }
+    body { cursor: auto; }
+
     nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
+    .nav-links {
+      display: none; flex-direction: column; gap: 0;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10,14,10,0.97);
+      justify-content: center; align-items: center;
+      z-index: 99;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { padding: 1rem 0; }
+    .nav-links a { font-size: 1.2rem; }
+    .nav-hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; z-index: 101; background: none; border: none; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--green); transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
     section { padding: 4rem 1.5rem; }
+    .musica-inner { padding: 4rem 1.5rem; }
+
+    .hero-inner { grid-template-columns: 1fr; padding: 0 1.5rem; gap: 2rem; }
+    h1 { font-size: 2.6rem; }
+    .hero-desc { max-width: 100%; }
+    .hero-btns { flex-direction: column; align-items: flex-start; }
+    .btn-primary, .btn-outline { width: 100%; text-align: center; justify-content: center; }
+
+    .sobre-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .sobre-photo-frame { max-width: 260px; margin: 0 auto; }
+    .sobre-cards-full { grid-template-columns: 1fr 1fr; }
+
+    .formacion-grid { grid-template-columns: 1fr; }
+    .erasmus-row { grid-template-columns: 1fr; }
+
+    .skills-pills { gap: 0.5rem; }
+    .skill-pill { font-size: 0.72rem; padding: 0.4rem 0.8rem; }
+
+    .musica-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+    .contacto-sub br { display: none; }
+    .contact-cards { grid-template-columns: 1fr; }
+    .cc-val { font-size: 0.72rem; word-break: break-all; }
+
+    footer { padding: 1.5rem; font-size: 0.65rem; }
+  }
+
+  @media (max-width: 400px) {
+    h1 { font-size: 2rem; }
+    .sobre-cards-full { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -415,13 +472,16 @@
   <div class="nav-logo">
     <span>~/</span>manuel<span>.dev</span>
   </div>
-  <ul class="nav-links">
-    <li><a href="#sobre">sobre_mi</a></li>
-    <li><a href="#formacion">formacion</a></li>
-    <li><a href="#habilidades">habilidades</a></li>
-    <li><a href="#musica">musica</a></li>
-    <li><a href="#contacto">contacto</a></li>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#sobre" onclick="closeMenu()">sobre_mi</a></li>
+    <li><a href="#formacion" onclick="closeMenu()">formacion</a></li>
+    <li><a href="#habilidades" onclick="closeMenu()">habilidades</a></li>
+    <li><a href="#musica" onclick="closeMenu()">musica</a></li>
+    <li><a href="#contacto" onclick="closeMenu()">contacto</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -692,6 +752,18 @@
 </footer>
 
 <script>
+  // Hamburger menu
+  function toggleMenu() {
+    const nav = document.getElementById('navLinks');
+    const btn = document.getElementById('hamburger');
+    nav.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+
   // Cursor
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
