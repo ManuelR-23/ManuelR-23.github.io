@@ -36,6 +36,31 @@ if (!window.matchMedia('(pointer: coarse)').matches) {
   });
 }
 
+// Favicon via canvas (compatible con Safari)
+(function () {
+  const c = document.createElement('canvas');
+  c.width = c.height = 32;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = '#0a0e0a';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, 32, 32, 4);
+  ctx.fill();
+  ctx.strokeStyle = '#3ddc84';
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(7, 10); ctx.lineTo(15, 16); ctx.lineTo(7, 22);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(17, 22); ctx.lineTo(26, 22);
+  ctx.stroke();
+  const link = document.querySelector("link[rel='icon']") || document.createElement('link');
+  link.rel = 'icon';
+  link.href = c.toDataURL();
+  document.head.appendChild(link);
+})();
+
 // Fade in on scroll
 const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
