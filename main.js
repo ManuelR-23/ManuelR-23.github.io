@@ -10,7 +10,8 @@ function closeMenu() {
     document.getElementById('hamburger').classList.remove('open');
 }
 
-// Cursor
+// Cursor (skip on touch devices)
+if (!window.matchMedia('(pointer: coarse)').matches) {
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
@@ -21,11 +22,10 @@ function closeMenu() {
     ry += (my - ry) * 0.12;
     ring.style.transform = `translate(${rx-16}px, ${ry-16}px)`;
     requestAnimationFrame(animCursor);
-}
-animCursor();
+  }
+  animCursor();
 
-// Hover effect on cursor
-document.querySelectorAll('a, button, .skill-pill, .sobre-card, .form-card').forEach(el => {
+  document.querySelectorAll('a, button, .skill-pill, .sobre-card, .form-card').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.transform += ' scale(2)';
       ring.style.width = '48px'; ring.style.height = '48px';
@@ -33,7 +33,8 @@ document.querySelectorAll('a, button, .skill-pill, .sobre-card, .form-card').for
     el.addEventListener('mouseleave', () => {
       ring.style.width = '32px'; ring.style.height = '32px';
     });
-});
+  });
+}
 
 // Fade in on scroll
 const observer = new IntersectionObserver(entries => {
